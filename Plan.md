@@ -4,4 +4,7 @@ Home_Page has -> all languages as folders
 
                  example Java selected by user 
                  -> need to be able to see filters
-                 
+
+
+Page per topic is single page
+SELECT - Single page with dynamic data loading

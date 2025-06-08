@@ -468,9 +468,35 @@
                 loadingScreen.style.display = 'none';
                 mainContent.style.opacity = '1';
             }, 500);
-        }, 3000);
+        }, 0);
 
-        // Add click effects
+        // Navigation function placed outside to avoid redeclaration
+        function navigateToTopic(topic) {
+            const topicRoutes = {
+                'python': 'python.html',
+                'algorithms': 'algorithms.html',
+                'data structures': 'data-structures.html',
+                'mathematics': 'mathematics.html',
+                'ai': 'ai.html',
+                'java': 'java.html',
+                'sql': 'sql.html',
+                'database': 'database.html',
+                'functional programming': 'functional.html',
+                'ruby': 'ruby.html',
+                'c': 'c.html',
+                'c++': 'cpp.html',
+                'regex': 'regex.html',
+                'linux shell': 'linux-shell.html',
+                'react': 'react.html'
+            };
+
+            const page = topicRoutes[topic];
+            if (page) {
+                window.location.href = `topic.html?topic=${encodeURIComponent(topic)}`;
+            }
+        }
+
+        // Add click effects + topic nav
         document.querySelectorAll('.grid-item').forEach((item, index) => {
             item.addEventListener('click', function () {
                 this.style.animation = 'none';
@@ -478,7 +504,8 @@
                     this.style.animation = 'pulse 0.5s ease';
                 }, 10);
 
-                console.log(`Module ${index + 1} accessed`);
+                const topic = this.querySelector('.grid-text').textContent.replace('> ', '').toLowerCase();
+                navigateToTopic(topic);
             });
         });
     </script>

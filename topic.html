@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Loading...</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #39ff14;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+        }
+
+        .back-btn {
+            color: #39ff14;
+            text-decoration: none;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-transform: capitalize;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-bar,
+        .filter-dropdown {
+            padding: 10px;
+            background: #111;
+            border: 1px solid #333;
+            color: #39ff14;
+            border-radius: 4px;
+        }
+
+        .problem {
+            padding: 15px;
+            background: #111;
+            border: 1px solid #333;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.3s;
+            text-decoration: none;
+            color: #39ff14;
+        }
+
+        .problem:hover {
+            border-color: #39ff14;
+            transform: translateX(10px);
+        }
+
+        .difficulty {
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            text-transform: capitalize;
+        }
+
+        .easy {
+            background: #10b981;
+            color: #000;
+        }
+
+        .medium {
+            background: #f59e0b;
+            color: #000;
+        }
+
+        .hard {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .loading {
+            margin-top: 100px;
+            text-align: center;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <a class="back-btn" href="index.html">← Back</a>
+    <h1 id="topicTitle">Loading...</h1>
+
+    <div class="controls">
+        <input id="searchBar" class="search-bar" type="text" placeholder="Search problems..." />
+        <select id="difficultyFilter" class="filter-dropdown">
+            <option value="all">All</option>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select>
+    </div>
+
+    <div id="problemsList">
+        <div class="loading">Loading problems...</div>
+    </div>
+
+    <script>
+        const problemData = {
+            python: [
+                { number: 1, title: "Say 'Hello, World!' With Python", difficulty: "easy", successRate: "96.77%" },
+                { number: 2, title: "Python If-Else", difficulty: "easy", successRate: "91.85%" },
+                { number: 3, title: "Arithmetic Operators", difficulty: "easy", successRate: "94.62%" },
+                { number: 4, title: "Write a Function", difficulty: "medium", successRate: "90.67%" }
+            ],
+            algorithms: [
+                { number: 1, title: "Two Sum", difficulty: "easy", successRate: "55.7%" },
+                { number: 2, title: "Add Two Numbers", difficulty: "medium", successRate: "46.1%" },
+                { number: 3, title: "Median of Two Sorted Arrays", difficulty: "hard", successRate: "43.7%" }
+            ],
+            java: [
+                { number: 1, title: "Welcome to Java!", difficulty: "easy", successRate: "97.15%" },
+                { number: 2, title: "Java If-Else", difficulty: "easy", successRate: "91.45%" }
+            ]
+            // Add more topics as needed
+        };
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const topic = urlParams.get('topic') || 'python';
+
+        document.title = `${topic} Problems`;
+        document.getElementById('topicTitle').textContent = topic;
+
+        const allProblems = problemData[topic] || [];
+
+        function renderProblems(problems) {
+            const container = document.getElementById('problemsList');
+            container.innerHTML = '';
+
+            problems.forEach(p => {
+                const link = document.createElement('a');
+                link.className = 'problem';
+                link.href = `problem.html?topic=${encodeURIComponent(topic)}&id=${p.number}`;
+                link.innerHTML = `
+          <span>${p.number}. ${p.title}</span>
+          <div>
+            <span class="difficulty ${p.difficulty}">${p.difficulty}</span>
+            <span style="margin-left:10px;">${p.successRate}</span>
+          </div>
+        `;
+                container.appendChild(link);
+            });
+        }
+
+        renderProblems(allProblems);
+
+        document.getElementById('searchBar').addEventListener('input', e => {
+            const search = e.target.value.toLowerCase();
+            const filtered = allProblems.filter(p => p.title.toLowerCase().includes(search));
+            renderProblems(filtered);
+        });
+
+        document.getElementById('difficultyFilter').addEventListener('change', e => {
+            const level = e.target.value;
+            const filtered = level === 'all' ? allProblems : allProblems.filter(p => p.difficulty === level);
+            renderProblems(filtered);
+        });
+    </script>
+</body>
+
+</html>

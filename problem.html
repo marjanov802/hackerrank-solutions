@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Problem</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #39ff14;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+        }
+
+        .back-btn {
+            color: #39ff14;
+            text-decoration: none;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .loading {
+            margin-top: 50px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        #problemContent {
+            border: 1px solid #333;
+            background: #111;
+            padding: 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <a class="back-btn" href="javascript:history.back()">← Back</a>
+    <div id="problemContent">Loading...</div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const topic = params.get('topic');
+        const id = params.get('id');
+
+        const container = document.getElementById('problemContent');
+
+        if (!topic || !id) {
+            container.innerHTML = "<p>Error: Topic or ID missing from URL.</p>";
+        } else {
+            fetch(`problems/${topic}/${id}.html`)
+                .then(response => {
+                    if (!response.ok) throw new Error("File not found");
+                    return response.text();
+                })
+                .then(html => {
+                    container.innerHTML = html;
+                })
+                .catch(err => {
+                    container.innerHTML = `<p>⚠️ Could not load solution file for "${topic}/${id}".</p>`;
+                });
+        }
+    </script>
+</body>
+
+</html>
