@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nested Lists - Solution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Courier New', monospace;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(to bottom, #1a1a1a, #0f0f0f);
+            padding: 20px 30px;
+            border-bottom: 2px solid #39ff14;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 2px 10px rgba(57, 255, 20, 0.1);
+        }
+
+        .back-btn {
+            color: #39ff14;
+            text-decoration: none;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-5px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            color: #39ff14;
+            font-size: 42px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+        }
+
+        .problem-summary {
+            background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .summary-section h3 {
+            color: #39ff14;
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .summary-section p,
+        .summary-section ul {
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        .summary-section ul {
+            list-style: none;
+            padding-left: 10px;
+        }
+
+        .summary-section li {
+            margin: 5px 0;
+        }
+
+        .output-preview {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            color: #39ff14;
+            font-size: 14px;
+            white-space: pre-wrap;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section h2 {
+            color: #39ff14;
+            font-size: 28px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h2::before {
+            content: '';
+            width: 40px;
+            height: 3px;
+            background: #39ff14;
+        }
+
+        .solution-container {
+            background: #0f0f0f;
+            border: 2px solid #39ff14;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            position: relative;
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.1);
+        }
+
+        .solution-header {
+            color: #39ff14;
+            font-size: 16px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copy-btn {
+            background: #39ff14;
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: #4fff1f;
+            transform: scale(1.05);
+        }
+
+        .copy-btn.copied {
+            background: #10b981;
+        }
+
+        .code-container {
+            background: #000;
+            border-radius: 10px;
+            padding: 15px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            position: relative;
+            white-space: pre;
+            line-height: 0.8;
+        }
+
+        .code-container pre {
+            font-family: inherit;
+            font-size: inherit;
+            line-height: 0.8;
+            color: inherit;
+        }
+
+        .code-line {
+            padding: 0 15px;
+            margin: 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            display: block;
+            color: #fff;
+            line-height: 0.8;
+        }
+
+        .code-line:hover {
+            background: rgba(57, 255, 20, 0.1);
+            transform: translateX(10px);
+            box-shadow: -5px 0 0 0 #39ff14;
+        }
+
+        .code-line.highlight {
+            background: rgba(57, 255, 20, 0.1);
+            transform: translateX(10px);
+            box-shadow: -5px 0 0 0 #39ff14;
+        }
+
+        .tooltip {
+            position: fixed;
+            background: #1a1a1a;
+            border: 2px solid #39ff14;
+            border-radius: 8px;
+            padding: 10px 15px;
+            max-width: 350px;
+            font-size: 13px;
+            color: #39ff14;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.2s, transform 0.2s;
+            z-index: 1000;
+        }
+
+        .tooltip.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tooltip::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid #39ff14;
+        }
+
+        .hover-hint {
+            color: #666;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.6;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.6;
+            }
+        }
+
+        code {
+            background: #1a1a1a;
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: #39ff14;
+            font-family: 'Courier New', monospace;
+        }
+
+        .highlight-code {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            color: #fff;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .highlight-remove {
+            color: #ef4444;
+            text-decoration: line-through;
+        }
+
+        .highlight-keep {
+            color: #39ff14;
+        }
+
+        .step-by-step {
+            background: #1a1a1a;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .step-by-step table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .step-by-step th,
+        .step-by-step td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        .step-by-step th {
+            color: #39ff14;
+            font-weight: bold;
+        }
+
+        .step-by-step .check-yes {
+            color: #10b981;
+        }
+
+        .step-by-step .check-no {
+            color: #ef4444;
+        }
+
+        .data-structure {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+
+        .data-structure .item {
+            margin: 3px 0;
+            padding: 2px 5px;
+        }
+
+        .data-structure .name {
+            color: #ffd700;
+        }
+
+        .data-structure .score {
+            color: #87ceeb;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <a href="../../topic.html?topic=python" class="back-btn">
+            <span>←</span> Back to Python Problems
+        </a>
+        <span style="color: #666;">Problem 8</span>
+    </div>
+
+    <div class="container">
+        <h1>Nested Lists</h1>
+
+        <div class="problem-summary">
+            <div class="summary-grid">
+                <div class="summary-section">
+                    <h3>Task</h3>
+                    <p>Given a list of students and their grades:</p>
+                    <ul>
+                        <li>• Find the <strong>second lowest grade</strong></li>
+                        <li>• Print name(s) of students with that grade</li>
+                        <li>• If multiple students, sort names alphabetically</li>
+                    </ul>
+
+                    <h3 style="margin-top: 20px;">Input</h3>
+                    <p>First line: number of students<br>
+                        Then pairs of: name, grade</p>
+                </div>
+                <div class="summary-section">
+                    <h3>Example</h3>
+                    <p>5 students with grades:</p>
+                    <div class="data-structure">
+                        <div class="item">Harry: <span class="score">37.21</span></div>
+                        <div class="item">Berry: <span class="score">37.21</span></div>
+                        <div class="item">Tina: <span class="score">37.2</span></div>
+                        <div class="item">Akriti: <span class="score">41</span></div>
+                        <div class="item">Harsh: <span class="score">39</span></div>
+                    </div>
+
+                    <h3 style="margin-top: 20px;">Expected Output</h3>
+                    <div class="output-preview">Berry
+                        Harry</div>
+
+                    <p style="margin-top: 10px; font-size: 12px; color: #999;">
+                        Unique scores: [37.2, 37.21, 39, 41]<br>
+                        Second lowest: 37.21
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Solution</h2>
+            <div class="solution-container">
+                <div class="solution-header">
+                    <span>✨ Complete Solution</span>
+                    <button class="copy-btn" onclick="copyCode('main-code')">Copy</button>
+                </div>
+                <div class="code-container" id="main-code">
+                    <pre
+                        style="margin:0;padding:0;"><span class="code-line" data-group="main">if __name__ == '__main__':</span>
+<span class="code-line" data-group="storage">    alist = []</span>
+<span class="code-line" data-group="input">    for i in range(int(input())):</span>
+<span class="code-line" data-group="input">        name = input()</span>
+<span class="code-line" data-group="input">        score = float(input())</span>
+<span class="code-line" data-group="input">        alist.append([name, score])</span>
+<span class="code-line" data-group="process">    second_highest = sorted(set([score for name, score in alist]))[1]</span>
+<span class="code-line" data-group="output">    print('\n'.join(sorted([name for name, score in alist if score == second_highest])))</span></pre>
+                </div>
+                <div class="hover-hint">Hover over code sections to see explanations</div>
+            </div>
+
+            <div class="solution-container">
+                <div class="solution-header">
+                    <span>📖 What Is the Question Asking?</span>
+                </div>
+                <div style="padding: 0 10px;">
+                    <p style="margin-bottom: 15px;">You're given a list of students and their grades. Your task is to:
+                    </p>
+                    <ul style="color: #ccc; margin-bottom: 15px;">
+                        <li>• Find the <strong style="color: #39ff14;">second lowest grade</strong> in the class</li>
+                        <li>• Print the <strong style="color: #39ff14;">name(s)</strong> of the student(s) who got that
+                            grade</li>
+                        <li>• If more than one student got that grade, print their names in <strong
+                                style="color: #39ff14;">alphabetical order</strong></li>
+                    </ul>
+
+                    <p style="color: #39ff14; margin-bottom: 10px;">🧠 Example:</p>
+                    <div class="highlight-code">5
+                        Harry
+                        37.21
+                        Berry
+                        37.21
+                        Tina
+                        37.2
+                        Akriti
+                        41
+                        Harsh
+                        39</div>
+
+                    <p style="margin: 15px 0;">This creates the structure:</p>
+                    <div class="highlight-code">[
+                        ['Harry', 37.21],
+                        ['Berry', 37.21],
+                        ['Tina', 37.2],
+                        ['Akriti', 41],
+                        ['Harsh', 39]
+                        ]</div>
+                </div>
+            </div>
+
+            <div class="solution-container">
+                <div class="solution-header">
+                    <span>🧩 Understanding List Comprehensions</span>
+                </div>
+                <div style="padding: 0 10px;">
+                    <p style="margin-bottom: 15px;">The solution uses <strong>two list comprehensions</strong>. Let's
+                        break them down:</p>
+
+                    <p style="color: #39ff14; margin-bottom: 10px;">📍 Part 1: Extract all scores</p>
+                    <div class="highlight-code">[score for name, score in alist]</div>
+
+                    <div class="step-by-step">
+                        <p style="color: #39ff14; margin-bottom: 10px;">What <code>for name, score in alist</code>
+                            means:</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Iteration</th>
+                                    <th>Item from alist</th>
+                                    <th>name gets</th>
+                                    <th>score gets</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>['Harry', 37.21]</td>
+                                    <td>"Harry"</td>
+                                    <td>37.21</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>['Berry', 37.21]</td>
+                                    <td>"Berry"</td>
+                                    <td>37.21</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>['Tina', 37.2]</td>
+                                    <td>"Tina"</td>
+                                    <td>37.2</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p style="margin-top: 10px; color: #ccc;">Result: <code>[37.21, 37.21, 37.2, 41, 39]</code></p>
+                    </div>
+
+                    <p style="color: #39ff14; margin: 20px 0 10px;">📍 Part 2: Filter students by score</p>
+                    <div class="highlight-code">[name for name, score in alist if score == second_highest]</div>
+
+                    <p style="margin-bottom: 15px;">This goes through each student and keeps only names where the score
+                        matches the second lowest.</p>
+
+                    <div class="step-by-step">
+                        <p style="color: #39ff14; margin-bottom: 10px;">If <code>second_highest = 37.21</code>:</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Score</th>
+                                    <th>score == 37.21?</th>
+                                    <th>Keep name?</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Harry</td>
+                                    <td>37.21</td>
+                                    <td class="check-yes">✅ Yes</td>
+                                    <td class="check-yes">✅ Keep "Harry"</td>
+                                </tr>
+                                <tr>
+                                    <td>Berry</td>
+                                    <td>37.21</td>
+                                    <td class="check-yes">✅ Yes</td>
+                                    <td class="check-yes">✅ Keep "Berry"</td>
+                                </tr>
+                                <tr>
+                                    <td>Tina</td>
+                                    <td>37.2</td>
+                                    <td class="check-no">❌ No</td>
+                                    <td class="check-no">❌ Skip</td>
+                                </tr>
+                                <tr>
+                                    <td>Akriti</td>
+                                    <td>41</td>
+                                    <td class="check-no">❌ No</td>
+                                    <td class="check-no">❌ Skip</td>
+                                </tr>
+                                <tr>
+                                    <td>Harsh</td>
+                                    <td>39</td>
+                                    <td class="check-no">❌ No</td>
+                                    <td class="check-no">❌ Skip</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p style="margin-top: 10px; color: #ccc;">Result: <code>["Harry", "Berry"]</code></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="solution-container">
+                <div class="solution-header">
+                    <span>🔍 Step-by-Step Walkthrough</span>
+                </div>
+                <div style="padding: 0 10px;">
+                    <p style="color: #39ff14; margin-bottom: 10px;">Step 1: Store the data</p>
+                    <div class="highlight-code">alist = []
+                        for i in range(int(input())):
+                        name = input()
+                        score = float(input())
+                        alist.append([name, score])</div>
+                    <p style="margin: 10px 0; color: #ccc;">Creates:
+                        <code>[['Harry', 37.21], ['Berry', 37.21], ...]</code>
+                    </p>
+
+                    <p style="color: #39ff14; margin: 20px 0 10px;">Step 2: Find unique scores and sort them</p>
+                    <div class="highlight-code">[score for name, score in alist] → [37.21, 37.21, 37.2, 41, 39]
+                        set(...) → {37.21, 37.2, 41, 39} # removes duplicates
+                        sorted(...) → [37.2, 37.21, 39, 41] # sorts low to high
+                        [1] → 37.21 # second element</div>
+
+                    <p style="color: #39ff14; margin: 20px 0 10px;">Step 3: Get matching students</p>
+                    <div class="highlight-code">[name for name, score in alist if score == 37.21] → ["Harry", "Berry"]
+                    </div>
+
+                    <p style="color: #39ff14; margin: 20px 0 10px;">Step 4: Sort alphabetically and print</p>
+                    <div class="highlight-code">sorted(["Harry", "Berry"]) → ["Berry", "Harry"]
+                        '\n'.join(...) → "Berry\nHarry"</div>
+                </div>
+            </div>
+
+            <div class="solution-container">
+                <div class="solution-header">
+                    <span>🎯 Key Python Concepts</span>
+                </div>
+                <div style="padding: 0 10px;">
+                    <ul style="color: #ccc; line-height: 1.8;">
+                        <li>• <strong>append([name, score])</strong> — adds a 2-element list to store each student's
+                            data</li>
+                        <li>• <strong>set()</strong> — removes duplicate scores automatically</li>
+                        <li>• <strong>sorted()</strong> — sorts numbers low to high by default</li>
+                        <li>• <strong>for name, score in alist</strong> — unpacks each [name, score] pair in the loop
+                        </li>
+                        <li>• <strong>'\n'.join()</strong> — prints each name on a separate line</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tooltip element -->
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        const explanations = {
+            'main': 'Standard Python entry point - ensures code runs when script is executed directly.',
+            'storage': 'Create empty list to store student data as [name, score] pairs.',
+            'input': 'Read number of students, then loop to collect each name and score pair. append([name, score]) adds each student as a 2-element list.',
+            'process': 'Extract all scores, remove duplicates with set(), sort them, and get the second element [1] which is the second lowest score.',
+            'output': 'Find all names with the second lowest score using list comprehension, sort alphabetically, and join with newlines for printing.'
+        };
+
+        const tooltip = document.getElementById('tooltip');
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const codeLines = document.querySelectorAll('.code-line');
+
+            codeLines.forEach(line => {
+                line.addEventListener('mouseenter', function (e) {
+                    const groupType = this.getAttribute('data-group');
+
+                    if (groupType) {
+                        // Highlight all lines with same group
+                        const container = this.closest('.code-container');
+                        const groupLines = container.querySelectorAll(`[data-group="${groupType}"]`);
+                        groupLines.forEach(gl => gl.classList.add('highlight'));
+
+                        if (explanations[groupType]) {
+                            tooltip.innerHTML = explanations[groupType];
+                            tooltip.classList.add('visible');
+                            updateTooltipPosition(e);
+                        }
+                    }
+                });
+
+                line.addEventListener('mousemove', function (e) {
+                    updateTooltipPosition(e);
+                });
+
+                line.addEventListener('mouseleave', function () {
+                    const groupType = this.getAttribute('data-group');
+                    if (groupType) {
+                        const container = this.closest('.code-container');
+                        const groupLines = container.querySelectorAll(`[data-group="${groupType}"]`);
+                        groupLines.forEach(gl => gl.classList.remove('highlight'));
+                    }
+                    tooltip.classList.remove('visible');
+                });
+            });
+        });
+
+        function updateTooltipPosition(e) {
+            const x = e.clientX;
+            const y = e.clientY;
+
+            // Position tooltip below and to the right of cursor
+            tooltip.style.left = x + 10 + 'px';
+            tooltip.style.top = y + 20 + 'px';
+
+            // Adjust if tooltip goes off screen
+            const rect = tooltip.getBoundingClientRect();
+            if (rect.right > window.innerWidth) {
+                tooltip.style.left = (window.innerWidth - rect.width - 10) + 'px';
+            }
+            if (rect.bottom > window.innerHeight) {
+                tooltip.style.top = (y - rect.height - 20) + 'px';
+            }
+        }
+
+        function copyCode(elementId) {
+            const element = document.getElementById(elementId);
+            const preElement = element.querySelector('pre');
+            const textToCopy = preElement.textContent;
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✓ Copied!';
+                btn.classList.add('copied');
+
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+
+</html>

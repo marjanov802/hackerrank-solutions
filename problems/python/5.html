@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Print Function - Solution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Courier New', monospace;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(to bottom, #1a1a1a, #0f0f0f);
+            padding: 20px 30px;
+            border-bottom: 2px solid #39ff14;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 2px 10px rgba(57, 255, 20, 0.1);
+        }
+
+        .back-btn {
+            color: #39ff14;
+            text-decoration: none;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-5px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            color: #39ff14;
+            font-size: 42px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+        }
+
+        .problem-summary {
+            background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .summary-section h3 {
+            color: #39ff14;
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .summary-section p,
+        .summary-section ul {
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        .output-preview {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 5px 10px;
+            font-family: 'Courier New', monospace;
+            color: #39ff14;
+            font-size: 16px;
+            white-space: pre;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .section h2 {
+            color: #39ff14;
+            font-size: 28px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h2::before {
+            content: '';
+            width: 40px;
+            height: 3px;
+            background: #39ff14;
+        }
+
+        .solution-container {
+            background: #0f0f0f;
+            border: 2px solid #39ff14;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            position: relative;
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.1);
+        }
+
+        .solution-header {
+            color: #39ff14;
+            font-size: 16px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copy-btn {
+            background: #39ff14;
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .code-container {
+            background: #000;
+            border-radius: 10px;
+            padding: 15px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            position: relative;
+            white-space: pre;
+            line-height: 0.8;
+        }
+
+        .code-line {
+            padding: 0 15px;
+            color: #fff;
+            display: block;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .code-line:hover {
+            background: rgba(57, 255, 20, 0.1);
+            transform: translateX(10px);
+            box-shadow: -5px 0 0 0 #39ff14;
+        }
+
+        .hover-hint {
+            color: #666;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        .tooltip {
+            position: fixed;
+            background: #1a1a1a;
+            border: 2px solid #39ff14;
+            border-radius: 8px;
+            padding: 10px 15px;
+            max-width: 300px;
+            font-size: 13px;
+            color: #39ff14;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.2s, transform 0.2s;
+            z-index: 1000;
+        }
+
+        .tooltip.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.6;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.6;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <a href="../../topic.html?topic=python" class="back-btn">
+            <span>←</span> Back to Python Problems
+        </a>
+        <span style="color: #666;">Problem 6</span>
+    </div>
+    <div class="container">
+        <h1>Print Function</h1>
+        <div class="problem-summary">
+            <div class="summary-grid">
+                <div class="summary-section">
+                    <h3>Task</h3>
+                    <p>Given an integer <code>n</code>, print the numbers from 1 to <code>n</code> on the same line with
+                        no spaces or newlines between them. Do <strong>not</strong> use string methods.</p>
+                    <h3 style="margin-top: 20px;">Input</h3>
+                    <p>An integer <code>n</code>.</p>
+                    <h3 style="margin-top: 20px;">Constraints</h3>
+                    <p>1 ≤ n ≤ 150</p>
+                </div>
+                <div class="summary-section">
+                    <h3>Example</h3>
+                    <p>n = 5</p>
+                    <h3 style="margin-top: 20px;">Expected Output</h3>
+                    <div class="output-preview">12345</div>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <h2>Solution</h2>
+            <div class="solution-container">
+                <div class="solution-header">
+                    <span>✨ Complete Solution</span>
+                    <button class="copy-btn" onclick="copyCode('main-code')">Copy</button>
+                </div>
+                <div class="code-container" id="main-code">
+                    <pre style="margin:0;padding:0;"><span class="code-line" data-group="main">if __name__ == '__main__':</span>
+<span class="code-line" data-group="input">    n = int(input())</span>
+<span class="code-line" data-group="loop">    for i in range(1, n + 1):</span>
+<span class="code-line" data-group="print">        print(i, end='')</span></pre>
+                </div>
+                <div class="hover-hint">Hover over code sections to see explanations</div>
+            </div>
+        </div>
+        <div class="section">
+            <h2>Explanation</h2>
+            <ul>
+                <li><code>n = int(input())</code>: Reads the number like 5.</li>
+                <li><code>for i in range(1, n + 1)</code>: Loops from 1 to n.</li>
+                <li><code>print(i, end='')</code>: Prints each number without a newline or space.</li>
+                <li><code>end=''</code>: Stops Python from starting a new line — so all numbers appear together like
+                    12345.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="tooltip" id="tooltip"></div>
+    <script>
+        const explanations = {
+            'main': 'This checks if the file is run directly (not imported).',
+            'input': 'Reads input from the user and converts it to an integer.',
+            'loop': 'Loops from 1 to n (inclusive).',
+            'print': 'Prints each number with no newline or space after it.'
+        };
+
+        const tooltip = document.getElementById('tooltip');
+
+        document.querySelectorAll('.code-line').forEach(line => {
+            line.addEventListener('mouseenter', function (e) {
+                const groupType = this.getAttribute('data-group');
+                if (groupType && explanations[groupType]) {
+                    document.querySelectorAll(`[data-group="${groupType}"]`)
+                        .forEach(el => el.classList.add('highlight'));
+                    tooltip.innerHTML = explanations[groupType];
+                    tooltip.classList.add('visible');
+                    updateTooltipPosition(e);
+                }
+            });
+
+            line.addEventListener('mousemove', updateTooltipPosition);
+
+            line.addEventListener('mouseleave', function () {
+                const groupType = this.getAttribute('data-group');
+                document.querySelectorAll(`[data-group="${groupType}"]`)
+                    .forEach(el => el.classList.remove('highlight'));
+                tooltip.classList.remove('visible');
+            });
+        });
+
+        function updateTooltipPosition(e) {
+            tooltip.style.left = e.clientX + 10 + 'px';
+            tooltip.style.top = e.clientY + 20 + 'px';
+            const rect = tooltip.getBoundingClientRect();
+            if (rect.right > window.innerWidth) {
+                tooltip.style.left = (window.innerWidth - rect.width - 10) + 'px';
+            }
+            if (rect.bottom > window.innerHeight) {
+                tooltip.style.top = (e.clientY - rect.height - 20) + 'px';
+            }
+        }
+
+        function copyCode(id) {
+            const text = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target;
+                const original = btn.textContent;
+                btn.textContent = '✓ Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = original;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+
+</html>

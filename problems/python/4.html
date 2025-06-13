@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- 1.html in the python folder -->
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Say 'Hello, World!' With Python - Solution</title>
+    <title>Division - Solution</title>
     <style>
         * {
             margin: 0;
@@ -57,7 +56,6 @@
             text-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
         }
 
-        /* Compact problem summary */
         .problem-summary {
             background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
             border: 1px solid #2a2a2a;
@@ -81,9 +79,19 @@
             letter-spacing: 1px;
         }
 
-        .summary-section p {
+        .summary-section p,
+        .summary-section ul {
             color: #ccc;
             font-size: 14px;
+        }
+
+        .summary-section ul {
+            list-style: none;
+            padding-left: 10px;
+        }
+
+        .summary-section li {
+            margin: 5px 0;
         }
 
         .output-preview {
@@ -95,9 +103,9 @@
             font-family: 'Courier New', monospace;
             color: #39ff14;
             font-size: 16px;
+            white-space: pre-wrap;
         }
 
-        /* Solution sections */
         .section {
             margin-bottom: 50px;
             animation: fadeIn 0.5s ease-out;
@@ -177,21 +185,31 @@
         .code-container {
             background: #000;
             border-radius: 10px;
-            padding: 20px;
+            padding: 15px 20px;
             font-family: 'Courier New', monospace;
-            font-size: 18px;
+            font-size: 14px;
             position: relative;
+            white-space: pre;
+            line-height: 0.8;
+        }
+
+        .code-container pre {
+            font-family: inherit;
+            font-size: inherit;
+            line-height: 0.8;
+            color: inherit;
         }
 
         .code-line {
-            padding: 10px 15px;
-            margin: 5px 0;
+            padding: 0 15px;
+            margin: 0;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
             position: relative;
             display: block;
             color: #fff;
+            line-height: 0.8;
         }
 
         .code-line:hover {
@@ -206,37 +224,43 @@
             box-shadow: -5px 0 0 0 #39ff14;
         }
 
-        .code-group {
-            cursor: pointer;
-        }
-
         .code-comment {
             color: #888;
             font-style: italic;
         }
 
-        .explanation-panel {
-            background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
+        .tooltip {
+            position: fixed;
+            background: #1a1a1a;
             border: 2px solid #39ff14;
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 20px;
-            min-height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-
-        .explanation-content {
+            border-radius: 8px;
+            padding: 10px 15px;
+            max-width: 300px;
+            font-size: 13px;
             color: #39ff14;
-            font-size: 16px;
-            text-align: center;
-            opacity: 0.7;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.2s, transform 0.2s;
+            z-index: 1000;
         }
 
-        .explanation-content.active {
+        .tooltip.visible {
             opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tooltip::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid #39ff14;
         }
 
         .hover-hint {
@@ -261,54 +285,12 @@
             }
         }
 
-        .concept-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .concept-card {
-            background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
-            border: 1px solid #333;
-            border-radius: 10px;
-            padding: 20px;
-            transition: all 0.3s;
-        }
-
-        .concept-card:hover {
-            border-color: #39ff14;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(57, 255, 20, 0.1);
-        }
-
-        .concept-card h3 {
-            color: #39ff14;
-            margin-bottom: 10px;
-        }
-
         code {
             background: #1a1a1a;
             padding: 3px 8px;
             border-radius: 4px;
             color: #39ff14;
             font-family: 'Courier New', monospace;
-        }
-
-        .tip-box {
-            background: rgba(57, 255, 20, 0.1);
-            border-left: 4px solid #39ff14;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 0 10px 10px 0;
-        }
-
-        .tip-box h3 {
-            color: #39ff14;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
     </style>
 </head>
@@ -318,28 +300,37 @@
         <a href="../../topic.html?topic=python" class="back-btn">
             <span>←</span> Back to Python Problems
         </a>
-        <span style="color: #666;">Problem 1</span>
+        <span style="color: #666;">Problem 4</span>
     </div>
 
     <div class="container">
-        <h1>Say 'Hello, World!' With Python</h1>
+        <h1>Division</h1>
 
-        <!-- Compact problem summary -->
         <div class="problem-summary">
             <div class="summary-grid">
                 <div class="summary-section">
                     <h3>Task</h3>
-                    <p>Print <code>Hello, World!</code> on a single line.</p>
+                    <p>Read two integers from STDIN, <code>a</code> and <code>b</code>. Add logic to:</p>
+                    <ul>
+                        <li>1. Print the result of the integer division <code>a // b</code></li>
+                        <li>2. Print the result of the float division <code>a / b</code></li>
+                    </ul>
 
                     <h3 style="margin-top: 20px;">Input</h3>
-                    <p>None</p>
+                    <p>The first line contains the integer <code>a</code>.</p>
+                    <p>The second line contains the integer <code>b</code>.</p>
+
+                    <h3 style="margin-top: 20px;">Constraints</h3>
+                    <p>1 ≤ a, b ≤ 10⁷</p>
                 </div>
                 <div class="summary-section">
-                    <h3>Expected Output</h3>
-                    <div class="output-preview">Hello, World!</div>
-                    <p style="margin-top: 10px; font-size: 12px; color: #999;">
-                        Must match exactly (capitalization & punctuation)
-                    </p>
+                    <h3>Example</h3>
+                    <p>a = 3</p>
+                    <p>b = 5</p>
+
+                    <h3 style="margin-top: 20px;">Expected Output</h3>
+                    <div class="output-preview">0
+                        0.6</div>
                 </div>
             </div>
         </div>
@@ -352,85 +343,78 @@
                     <button class="copy-btn" onclick="copyCode('main-code')">Copy</button>
                 </div>
                 <div class="code-container" id="main-code">
-                    <div class="code-line" data-explanation="print-function">print("Hello, World!")</div>
+                    <pre style="margin:0;padding:0;"><span class="code-line" data-group="main">if __name__ == '__main__':</span>
+<span class="code-line" data-group="input">    a = int(input())</span>
+<span class="code-line" data-group="input">    b = int(input())</span>
+<span class="code-line" data-group="empty">    </span>
+<span class="code-line" data-group="operations">    print(a // b)</span>
+<span class="code-line" data-group="operations">    print(a / b)</span></pre>
                 </div>
-                <div class="hover-hint">Hover over the code to see explanation</div>
-
-                <div class="explanation-panel">
-                    <div class="explanation-content" id="main-explanation">
-                        Hover over the code to understand how it works!
-                    </div>
-                </div>
+                <div class="hover-hint">Hover over code sections to see explanations</div>
             </div>
         </div>
-
-
     </div>
+
+    <div class="tooltip" id="tooltip"></div>
 
     <script>
         const explanations = {
-            'print-function': 'The <strong>print()</strong> function outputs text to the console. The string you would like outputted, in this case, "Hello, World!" inside the quotes is what gets displayed.',
+            'main': 'Main program entry point. This runs only when script is executed directly.',
+            'input': 'Reads two integers from input using <code>input()</code> and <code>int()</code>.',
+            'operations': 'Performs division:<br>• Integer division using <code>//</code><br>• Float division using <code>/</code>'
         };
 
-        // Set up hover event listeners
+        const tooltip = document.getElementById('tooltip');
+
         document.addEventListener('DOMContentLoaded', function () {
-            // Handle single line hovers
-            const codeLines = document.querySelectorAll('.code-line[data-explanation]');
+            const codeLines = document.querySelectorAll('.code-line');
+
             codeLines.forEach(line => {
-                line.addEventListener('mouseenter', function () {
-                    const explanationType = this.getAttribute('data-explanation');
-                    const container = this.closest('.solution-container');
-                    const explanationEl = container.querySelector('.explanation-content');
-
-                    if (explanationType && explanations[explanationType]) {
-                        explanationEl.innerHTML = explanations[explanationType];
-                        explanationEl.classList.add('active');
-                    }
-                });
-            });
-
-            // Handle group hovers
-            const codeGroups = document.querySelectorAll('.code-group');
-            codeGroups.forEach(group => {
-                group.addEventListener('mouseenter', function () {
-                    // Highlight all lines in the group
-                    const lines = this.querySelectorAll('.code-line');
-                    lines.forEach(line => line.classList.add('highlight'));
-
-                    // Show explanation
+                line.addEventListener('mouseenter', function (e) {
                     const groupType = this.getAttribute('data-group');
-                    const container = this.closest('.solution-container');
-                    const explanationEl = container.querySelector('.explanation-content');
 
-                    if (groupType && explanations[groupType]) {
-                        explanationEl.innerHTML = explanations[groupType];
-                        explanationEl.classList.add('active');
+                    if (groupType && groupType !== 'empty') {
+                        const groupLines = document.querySelectorAll(`[data-group="${groupType}"]`);
+                        groupLines.forEach(gl => gl.classList.add('highlight'));
+
+                        if (explanations[groupType]) {
+                            tooltip.innerHTML = explanations[groupType];
+                            tooltip.classList.add('visible');
+                            updateTooltipPosition(e);
+                        }
                     }
                 });
 
-                group.addEventListener('mouseleave', function () {
-                    // Remove highlight from all lines in the group
-                    const lines = this.querySelectorAll('.code-line');
-                    lines.forEach(line => line.classList.remove('highlight'));
+                line.addEventListener('mousemove', function (e) {
+                    updateTooltipPosition(e);
+                });
+
+                line.addEventListener('mouseleave', function () {
+                    const groupType = this.getAttribute('data-group');
+                    if (groupType) {
+                        const groupLines = document.querySelectorAll(`[data-group="${groupType}"]`);
+                        groupLines.forEach(gl => gl.classList.remove('highlight'));
+                    }
+                    tooltip.classList.remove('visible');
                 });
             });
         });
 
-        function copyCode(elementId) {
-            const element = document.getElementById(elementId);
-            let textToCopy = '';
+        function updateTooltipPosition(e) {
+            tooltip.style.left = e.clientX + 10 + 'px';
+            tooltip.style.top = e.clientY + 20 + 'px';
 
-            if (element.classList.contains('code-line')) {
-                textToCopy = element.textContent;
-            } else {
-                // For containers, get all code lines
-                const codeLines = element.querySelectorAll('.code-line');
-                textToCopy = Array.from(codeLines)
-                    .filter(line => !line.classList.contains('code-comment'))
-                    .map(line => line.textContent)
-                    .join('\n');
+            const rect = tooltip.getBoundingClientRect();
+            if (rect.right > window.innerWidth) {
+                tooltip.style.left = (window.innerWidth - rect.width - 10) + 'px';
             }
+            if (rect.bottom > window.innerHeight) {
+                tooltip.style.top = (e.clientY - rect.height - 20) + 'px';
+            }
+        }
 
+        function copyCode(elementId) {
+            const textToCopy = document.getElementById(elementId).querySelector('pre').textContent;
             navigator.clipboard.writeText(textToCopy).then(() => {
                 const btn = event.target;
                 const originalText = btn.textContent;

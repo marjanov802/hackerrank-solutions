@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- topic.html -->
 
 <head>
     <meta charset="UTF-8" />
@@ -110,21 +111,167 @@
     <script>
         const problemData = {
             python: [
-                { number: 1, title: "Say 'Hello, World!' With Python", difficulty: "easy", successRate: "96.77%" },
-                { number: 2, title: "Python If-Else", difficulty: "easy", successRate: "91.85%" },
-                { number: 3, title: "Arithmetic Operators", difficulty: "easy", successRate: "94.62%" },
-                { number: 4, title: "Write a Function", difficulty: "medium", successRate: "90.67%" }
+                { number: 1, title: "Say 'Hello, World!' With Python", difficulty: "easy" },
+                { number: 2, title: "Python If-Else", difficulty: "easy" },
+                { number: 3, title: "Arithmetic Operators", difficulty: "easy" },
+                { number: 4, title: "Python: Division", difficulty: "easy" },
+                { number: 5, title: "Loops", difficulty: "easy" },
+                { number: 6, title: "Print Function", difficulty: "easy" },
+                { number: 7, title: "List Comprehensions", difficulty: "easy" },
+                { number: 8, title: "Find the Runner-Up Score!", difficulty: "easy" },
+                { number: 9, title: "Nested Lists", difficulty: "easy" },
+                { number: 10, title: "Finding the percentage", difficulty: "easy" },
+                { number: 11, title: "Lists", difficulty: "easy" },
+                { number: 12, title: "Tuples", difficulty: "easy" },
+                { number: 13, title: "sWAP cASE", difficulty: "easy" },
+                { number: 14, title: "String Split and Join", difficulty: "easy" },
+                { number: 15, title: "What's Your Name?", difficulty: "easy" },
+                { number: 16, title: "Mutations", difficulty: "easy" },
+                { number: 17, title: "Find a string", difficulty: "easy" },
+                { number: 18, title: "String Validators", difficulty: "easy" },
+                { number: 19, title: "Text Alignment", difficulty: "easy" },
+                { number: 20, title: "Text Wrap", difficulty: "easy" },
+                { number: 21, title: "Designer Door Mat", difficulty: "easy" },
+                { number: 22, title: "String Formatting", difficulty: "easy" },
+                { number: 23, title: "Alphabet Rangoli", difficulty: "easy" },
+                { number: 24, title: "Capitalize", difficulty: "easy" },
+                { number: 25, title: "The Minion Game", difficulty: "medium" },
+                { number: 26, title: "Merge the Tools!", difficulty: "medium" },
+                { number: 27, title: "collections.Counter()", difficulty: "easy" },
+                { number: 28, title: "itertools.permutations", difficulty: "easy" },
+                { number: 29, title: "Polar Coordinates", difficulty: "easy" },
+                { number: 30, title: "Introduction to Sets", difficulty: "easy" },
+                { number: 31, title: "DefaultDict Tutorial", difficulty: "easy" },
+                { number: 32, title: "Calendar Module", difficulty: "easy" },
+                { number: 33, title: "Exceptions", difficulty: "easy" },
+                { number: 34, title: "Collections.namedtuple()", difficulty: "easy" },
+                { number: 35, title: "Time Delta", difficulty: "medium" },
+                { number: 36, title: "Find Angle MBC", difficulty: "medium" },
+                { number: 37, title: "No Idea!", difficulty: "medium" },
+                { number: 38, title: "Collections.OrderedDict()", difficulty: "easy" },
+                { number: 39, title: "Symmetric Difference", difficulty: "easy" },
+                { number: 40, title: "itertools.combinations()", difficulty: "easy" },
+                { number: 41, title: "Incorrect Regex", difficulty: "easy" },
+                { number: 42, title: "Set.add()", difficulty: "easy" },
+                { number: 43, title: "intertools.combinations_with_replacement()", difficulty: "easy" },
+                { number: 44, title: "Word Order", difficulty: "medium" },
+                { number: 45, title: "Set .discard(), .remove() & .pop()", difficulty: "easy" },
+                { number: 46, title: "Collections.deque()", difficulty: "easy" },
+                { number: 47, title: "Compress the String!", difficulty: "medium" },
+                { number: 48, title: "Company Logo", difficulty: "medium" },
+                { number: 49, title: "Set .union() Operation", difficulty: "easy" },
+                { number: 50, title: "Piling Up!", difficulty: "medium" },
+                { number: 51, title: "Triangle Quest 2", difficulty: "medium" },
+                { number: 52, title: "Iterables and Iterators", difficulty: "medium" },
+                { number: 53, title: "Set .intersection() Operation", difficulty: "easy" },
+                { number: 54, title: "Mod Divmod", difficulty: "easy" },
+                { number: 55, title: "Power - Mod Power", difficulty: "easy" },
+                { number: 56, title: "Maximize it!", difficulty: "hard" },
+                { number: 57, title: "Set .difference() Operation", difficulty: "easy" },
+                { number: 58, title: "Integers Come In All Sizes", difficulty: "easy" },
+                { number: 59, title: "Set .symmetric_difference() Operation", difficulty: "easy" },
+                { number: 60, title: "Set Mutations", difficulty: "easy" },
+                { number: 61, title: "Triangle Quest", difficulty: "medium" },
+                { number: 62, title: "The Captain's Room", difficulty: "easy" },
+                { number: 63, title: "Check Subset", difficulty: "easy" },
+                { number: 64, title: "Check Strict Superset", difficulty: "easy" },
+                { number: 65, title: "Classes: Dealing with Complex Numbers", difficulty: "medium" },
+                { number: 66, title: "Class 2 - Find the Torsional Angle", difficulty: "easy" },
+                { number: 67, title: "Zipped!", difficulty: "easy" },
+                { number: 68, title: "Input()", difficulty: "easy" },
+                { number: 69, title: "Python Evaluation", difficulty: "easy" },
+                { number: 70, title: "Athlete Sort", difficulty: "medium" },
+                { number: 71, title: "Any or All", difficulty: "easy" },
+                { number: 72, title: "ginortS", difficulty: "medium" },
+                { number: 73, title: "Detecting Floating Point Number", difficulty: "easy" },
+                { number: 74, title: "Map and Lambda Function", difficulty: "easy" },
+                { number: 75, title: "Re.split()", difficulty: "easy" },
+                { number: 76, title: "Validating Email Addresses With a Filter", difficulty: "medium" },
+                { number: 77, title: "Group(), Groups() & Groupdict()", difficulty: "easy" },
+                { number: 78, title: "Reduce Function", difficulty: "medium" },
+                { number: 79, title: "Re.findall() & Re.finditer()", difficulty: "easy" },
+                { number: 80, title: "Re.start() & Re.end()", difficulty: "easy" },
+                { number: 81, title: "Regex Substitution", difficulty: "medium" },
+                { number: 82, title: "Validating Roman Numerals", difficulty: "easy" },
+                { number: 83, title: "Validating phone numbers", difficulty: "easy" },
+                { number: 84, title: "Validating and Parsing Email Addresses", difficulty: "easy" },
+                { number: 85, title: "Hex Color Code", difficulty: "easy" },
+                { number: 86, title: "HTML Parser - Part 1", difficulty: "easy" },
+                { number: 87, title: "HTML Parser - Part 2", difficulty: "easy" },
+                { number: 88, title: "Detect HTML Tags, Attributes and Attribute Values", difficulty: "easy" },
+                { number: 89, title: "XML 1 - Find the Score", difficulty: "easy" },
+                { number: 90, title: "Validating UID", difficulty: "easy" },
+                { number: 91, title: "Validating Credit Card Numbers", difficulty: "medium" },
+                { number: 92, title: "XML2 - Find the Maximum Depth", difficulty: "easy" },
+                { number: 93, title: "Standardize Mobile Number Using Decorators", difficulty: "easy" },
+                { number: 94, title: "Validating Postal Codes", difficulty: "hard" },
+                { number: 95, title: "Decorators 2 - Name Directory", difficulty: "easy" },
+                { number: 96, title: "Matrix Script", difficulty: "hard" },
+                { number: 97, title: "Words Score", difficulty: "medium" },
+                { number: 98, title: "Arrays", difficulty: "easy" },
+                { number: 99, title: "Shape and Reshape", difficulty: "easy" },
+                { number: 100, title: "Default Arguments", difficulty: "medium" },
+                { number: 101, title: "Transpose and Flatten", difficulty: "easy" },
+                { number: 102, title: "Concatenate", difficulty: "easy" },
+                { number: 103, title: "Zeros and Ones", difficulty: "easy" },
+                { number: 104, title: "Eyes and Identity", difficulty: "easy" },
+                { number: 105, title: "Array Mathematics", difficulty: "easy" },
+                { number: 106, title: "Floor, Ceil and Rint", difficulty: "easy" },
+                { number: 107, title: "Sum and Prod", difficulty: "easy" },
+                { number: 108, title: "Min and Max", difficulty: "easy" },
+                { number: 109, title: "Mean, Var, and Std", difficulty: "easy" },
+                { number: 110, title: "Dot and Cross", difficulty: "easy" },
+                { number: 111, title: "Inner and Outer", difficulty: "easy" },
+                { number: 112, title: "Polynomials", difficulty: "easy" },
+                { number: 113, title: "Linear Algebra", difficulty: "easy" }
             ],
+
             algorithms: [
-                { number: 1, title: "Two Sum", difficulty: "easy", successRate: "55.7%" },
-                { number: 2, title: "Add Two Numbers", difficulty: "medium", successRate: "46.1%" },
-                { number: 3, title: "Median of Two Sorted Arrays", difficulty: "hard", successRate: "43.7%" }
+                { number: 1, title: "Two Sum", difficulty: "easy" },
+                { number: 2, title: "Add Two Numbers", difficulty: "medium" },
+                { number: 3, title: "Median of Two Sorted Arrays", difficulty: "hard" }
             ],
             java: [
-                { number: 1, title: "Welcome to Java!", difficulty: "easy", successRate: "97.15%" },
-                { number: 2, title: "Java If-Else", difficulty: "easy", successRate: "91.45%" }
+                { number: 1, title: "Welcome to Java!", difficulty: "easy" },
+                { number: 2, title: "Java If-Else", difficulty: "easy" }
+            ],
+            'data structures': [
+                { number: 1, title: "Arrays - DS", difficulty: "easy" },
+                { number: 2, title: "2D Array - DS", difficulty: "easy" }
+            ],
+            mathematics: [
+                { number: 1, title: "Find the Point", difficulty: "easy" }
+            ],
+            ai: [
+                { number: 1, title: "Bot saves princess", difficulty: "easy" }
+            ],
+            sql: [
+                { number: 1, title: "Select All", difficulty: "easy" }
+            ],
+            database: [
+                { number: 1, title: "Database Normalization", difficulty: "easy" }
+            ],
+            'functional programming': [
+                { number: 1, title: "Solve Me First FP", difficulty: "easy" }
+            ],
+            ruby: [
+                { number: 1, title: "Hello World", difficulty: "easy" }
+            ],
+            c: [
+                { number: 1, title: "Hello World in C", difficulty: "easy" }
+            ],
+            'c++': [
+                { number: 1, title: "Say Hello, World! With C++", difficulty: "easy" }
+            ],
+            regex: [
+                { number: 1, title: "Matching Specific String", difficulty: "easy" }
+            ],
+            'linux shell': [
+                { number: 1, title: "Let's Echo", difficulty: "easy" }
+            ],
+            react: [
+                { number: 1, title: "Hello World Component", difficulty: "easy" }
             ]
-            // Add more topics as needed
         };
 
         const urlParams = new URLSearchParams(window.location.search);
@@ -142,14 +289,14 @@
             problems.forEach(p => {
                 const link = document.createElement('a');
                 link.className = 'problem';
-                link.href = `problem.html?topic=${encodeURIComponent(topic)}&id=${p.number}`;
+                // Updated path to match your file structure
+                link.href = `problems/${topic}/${p.number}.html`;
                 link.innerHTML = `
-          <span>${p.number}. ${p.title}</span>
-          <div>
-            <span class="difficulty ${p.difficulty}">${p.difficulty}</span>
-            <span style="margin-left:10px;">${p.successRate}</span>
-          </div>
-        `;
+                    <span>${p.number}. ${p.title}</span>
+                    <div>
+                        <span class="difficulty ${p.difficulty}">${p.difficulty}</span>
+                    </div>
+                `;
                 container.appendChild(link);
             });
         }

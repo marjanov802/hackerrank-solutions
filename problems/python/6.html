@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Function - Solution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Courier New', monospace;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(to bottom, #1a1a1a, #0f0f0f);
+            padding: 20px 30px;
+            border-bottom: 2px solid #39ff14;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 2px 10px rgba(57, 255, 20, 0.1);
+        }
+
+        .back-btn {
+            color: #39ff14;
+            text-decoration: none;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-5px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            color: #39ff14;
+            font-size: 42px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+        }
+
+        .problem-summary {
+            background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .summary-section h3 {
+            color: #39ff14;
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .summary-section p,
+        .summary-section ul {
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        .summary-section ul {
+            list-style: none;
+            padding-left: 10px;
+        }
+
+        .summary-section li {
+            margin: 5px 0;
+        }
+
+        .output-preview {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            color: #39ff14;
+            font-size: 16px;
+            white-space: pre-wrap;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section h2 {
+            color: #39ff14;
+            font-size: 28px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h2::before {
+            content: '';
+            width: 40px;
+            height: 3px;
+            background: #39ff14;
+        }
+
+        .solution-container {
+            background: #0f0f0f;
+            border: 2px solid #39ff14;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            position: relative;
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.1);
+        }
+
+        .solution-header {
+            color: #39ff14;
+            font-size: 16px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copy-btn {
+            background: #39ff14;
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: #4fff1f;
+            transform: scale(1.05);
+        }
+
+        .copy-btn.copied {
+            background: #10b981;
+        }
+
+        .code-container {
+            background: #000;
+            border-radius: 10px;
+            padding: 15px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            position: relative;
+            white-space: pre;
+            line-height: 0.8;
+        }
+
+        .code-container pre {
+            font-family: inherit;
+            font-size: inherit;
+            line-height: 0.8;
+            color: inherit;
+        }
+
+        .code-line {
+            padding: 0 15px;
+            margin: 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            display: block;
+            color: #fff;
+            line-height: 0.8;
+        }
+
+        .code-line:hover {
+            background: rgba(57, 255, 20, 0.1);
+            transform: translateX(10px);
+            box-shadow: -5px 0 0 0 #39ff14;
+        }
+
+        .code-line.highlight {
+            background: rgba(57, 255, 20, 0.1);
+            transform: translateX(10px);
+            box-shadow: -5px 0 0 0 #39ff14;
+        }
+
+        .code-comment {
+            color: #888;
+            font-style: italic;
+        }
+
+        /* Tooltip styles */
+        .tooltip {
+            position: fixed;
+            background: #1a1a1a;
+            border: 2px solid #39ff14;
+            border-radius: 8px;
+            padding: 10px 15px;
+            max-width: 300px;
+            font-size: 13px;
+            color: #39ff14;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.2s, transform 0.2s;
+            z-index: 1000;
+        }
+
+        .tooltip.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tooltip::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid #39ff14;
+        }
+
+        .hover-hint {
+            color: #666;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.6;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.6;
+            }
+        }
+
+        code {
+            background: #1a1a1a;
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: #39ff14;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <a href="../../topic.html?topic=python" class="back-btn">
+            <span>←</span> Back to Python Problems
+        </a>
+        <span style="color: #666;">Problem 5</span>
+    </div>
+
+    <div class="container">
+        <h1>Print Function</h1>
+
+        <div class="problem-summary">
+            <div class="summary-grid">
+                <div class="summary-section">
+                    <h3>Task</h3>
+                    <p>Read an integer <code>n</code> from STDIN.</p>
+                    <p>Without using any string methods, print the following:</p>
+                    <p><code>123...n</code></p>
+                    <p style="margin-top: 10px; color: #999;">Note that "..." represents the consecutive values in
+                        between.</p>
+
+                    <h3 style="margin-top: 20px;">Input</h3>
+                    <p>The first line contains an integer <code>n</code>.</p>
+
+                    <h3 style="margin-top: 20px;">Constraints</h3>
+                    <p>1 ≤ n ≤ 150</p>
+                </div>
+                <div class="summary-section">
+                    <h3>Example</h3>
+                    <p>n = 5</p>
+
+                    <h3 style="margin-top: 20px;">Expected Output</h3>
+                    <div class="output-preview">12345</div>
+
+                    <p style="margin-top: 20px; font-size: 12px; color: #999;">
+                        Print the list of integers from 1 through n as a string, without spaces.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Solution</h2>
+            <div class="solution-container">
+                <div class="solution-header">
+                    <span>✨ Complete Solution</span>
+                    <button class="copy-btn" onclick="copyCode('main-code')">Copy</button>
+                </div>
+                <div class="code-container" id="main-code">
+                    <pre style="margin:0;padding:0;"><span class="code-line" data-group="main">if __name__ == '__main__':</span>
+<span class="code-line" data-group="input">    n = int(input())</span>
+<span class="code-line" data-group="empty">    </span>
+<span class="code-line" data-group="loop">    for i in range(1, n+1):</span>
+<span class="code-line" data-group="loop">        print(i, end='')</span></pre>
+                </div>
+                <div class="hover-hint">Hover over code sections to see explanations</div>
+            </div>
+
+            <div class="solution-container">
+                <div class="solution-header">
+                    <span>📖 Understanding the Problem</span>
+                </div>
+                <div style="padding: 0 10px;">
+                    <p style="margin-bottom: 15px;">You need to print numbers from 1 to n, all on <strong
+                            style="color: #39ff14;">one line</strong>, <strong style="color: #39ff14;">without any
+                            spaces</strong> or line breaks between them.</p>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                        <div style="background: #000; border: 1px solid #39ff14; border-radius: 8px; padding: 15px;">
+                            <p style="color: #39ff14; margin-bottom: 10px;">✅ Correct Output (n=5):</p>
+                            <code style="color: #fff;">12345</code>
+                        </div>
+                        <div style="background: #000; border: 1px solid #ef4444; border-radius: 8px; padding: 15px;">
+                            <p style="color: #ef4444; margin-bottom: 10px;">❌ Wrong Output:</p>
+                            <code style="color: #fff;">1 2 3 4 5</code>
+                        </div>
+                    </div>
+
+                    <h3 style="color: #39ff14; margin: 20px 0 15px 0;">💡 How to Solve It:</h3>
+                    <ol style="color: #ccc; line-height: 1.8;">
+                        <li><strong>Take input</strong> – Read integer n using <code
+                                style="background: #1a1a1a; padding: 2px 6px; border-radius: 4px; color: #39ff14;">int(input())</code>
+                        </li>
+                        <li><strong>Loop from 1 to n</strong> – Use <code
+                                style="background: #1a1a1a; padding: 2px 6px; border-radius: 4px; color: #39ff14;">range(1, n+1)</code>
+                            to iterate</li>
+                        <li><strong>Print without newlines</strong> – Use <code
+                                style="background: #1a1a1a; padding: 2px 6px; border-radius: 4px; color: #39ff14;">print(i, end='')</code>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="solution-container">
+                <div class="solution-header">
+                    <span>🔍 What Does end='' Do?</span>
+                </div>
+                <div style="padding: 0 10px;">
+                    <p style="margin-bottom: 15px;">By default, <code
+                            style="background: #1a1a1a; padding: 2px 6px; border-radius: 4px; color: #39ff14;">print()</code>
+                        adds a newline (<code
+                            style="background: #1a1a1a; padding: 2px 6px; border-radius: 4px; color: #39ff14;">\n</code>)
+                        after each call:</p>
+
+                    <div
+                        style="background: #000; border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 15px 0;">
+                        <p style="color: #888; margin-bottom: 10px;">Default behavior:</p>
+                        <code style="color: #fff;">print(1)<br>print(2)</code>
+                        <p style="color: #888; margin-top: 10px;">Output:</p>
+                        <code style="color: #39ff14;">1<br>2</code>
+                    </div>
+
+                    <p style="margin: 20px 0;">The <code
+                            style="background: #1a1a1a; padding: 2px 6px; border-radius: 4px; color: #39ff14;">end</code>
+                        parameter controls what's printed at the end:</p>
+                    <ul style="color: #ccc; line-height: 1.8;">
+                        <li><code
+                                style="background: #1a1a1a; padding: 2px 6px; border-radius: 4px; color: #39ff14;">end='\n'</code>
+                            (default) → new line</li>
+                        <li><code
+                                style="background: #1a1a1a; padding: 2px 6px; border-radius: 4px; color: #39ff14;">end=''</code>
+                            → nothing (stay on same line)</li>
+                        <li><code
+                                style="background: #1a1a1a; padding: 2px 6px; border-radius: 4px; color: #39ff14;">end=' '</code>
+                            → space between items</li>
+                    </ul>
+
+                    <div
+                        style="background: #000; border: 1px solid #39ff14; border-radius: 8px; padding: 15px; margin: 15px 0;">
+                        <p style="color: #39ff14; margin-bottom: 10px;">With end='':</p>
+                        <code style="color: #fff;">for i in range(1, 6):<br>    print(i, end='')</code>
+                        <p style="color: #39ff14; margin-top: 10px;">Output: <code style="color: #fff;">12345</code></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="solution-container">
+                <div class="solution-header">
+                    <span>🔄 Alternative Solution (One-liner)</span>
+                    <button class="copy-btn" onclick="copyCode('alt-code')">Copy</button>
+                </div>
+                <div class="code-container" id="alt-code">
+                    <pre
+                        style="margin:0;padding:0;"><span class="code-line" data-group="oneliner">print(*range(1, int(input())+1), sep='')</span></pre>
+                </div>
+                <div class="hover-hint">Hover to see how this one-liner works</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tooltip element -->
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        const explanations = {
+            'main': 'Main program entry point. This is the standard Python idiom for running code when the script is executed directly.',
+            'input': 'Read an integer from input using <code>int(input())</code>.',
+            'loop': 'Loop from 1 to n (inclusive) using <code>range(1, n+1)</code>. The <code>end=\'\'</code> parameter prevents print from adding a newline, making all numbers appear on the same line.',
+            'oneliner': 'One-liner solution: <code>*range(1, n+1)</code> unpacks all numbers, <code>sep=\'\'</code> prints them without separators between values.'
+        };
+
+        const tooltip = document.getElementById('tooltip');
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const codeLines = document.querySelectorAll('.code-line');
+
+            codeLines.forEach(line => {
+                line.addEventListener('mouseenter', function (e) {
+                    const groupType = this.getAttribute('data-group');
+
+                    if (groupType && groupType !== 'empty') {
+                        // Highlight all lines with same group
+                        const container = this.closest('.code-container');
+                        const groupLines = container.querySelectorAll(`[data-group="${groupType}"]`);
+                        groupLines.forEach(gl => gl.classList.add('highlight'));
+
+                        if (explanations[groupType]) {
+                            tooltip.innerHTML = explanations[groupType];
+                            tooltip.classList.add('visible');
+                            updateTooltipPosition(e);
+                        }
+                    }
+                });
+
+                line.addEventListener('mousemove', function (e) {
+                    updateTooltipPosition(e);
+                });
+
+                line.addEventListener('mouseleave', function () {
+                    const groupType = this.getAttribute('data-group');
+                    if (groupType) {
+                        const container = this.closest('.code-container');
+                        const groupLines = container.querySelectorAll(`[data-group="${groupType}"]`);
+                        groupLines.forEach(gl => gl.classList.remove('highlight'));
+                    }
+                    tooltip.classList.remove('visible');
+                });
+            });
+        });
+
+        function updateTooltipPosition(e) {
+            const x = e.clientX;
+            const y = e.clientY;
+
+            // Position tooltip below and to the right of cursor
+            tooltip.style.left = x + 10 + 'px';
+            tooltip.style.top = y + 20 + 'px';
+
+            // Adjust if tooltip goes off screen
+            const rect = tooltip.getBoundingClientRect();
+            if (rect.right > window.innerWidth) {
+                tooltip.style.left = (window.innerWidth - rect.width - 10) + 'px';
+            }
+            if (rect.bottom > window.innerHeight) {
+                tooltip.style.top = (y - rect.height - 20) + 'px';
+            }
+        }
+
+        function copyCode(elementId) {
+            const element = document.getElementById(elementId);
+            const preElement = element.querySelector('pre');
+            const textToCopy = preElement.textContent;
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✓ Copied!';
+                btn.classList.add('copied');
+
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+
+</html>

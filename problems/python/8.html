@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Runner-Up Score - Solution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Courier New', monospace;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(to bottom, #1a1a1a, #0f0f0f);
+            padding: 20px 30px;
+            border-bottom: 2px solid #39ff14;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 2px 10px rgba(57, 255, 20, 0.1);
+        }
+
+        .back-btn {
+            color: #39ff14;
+            text-decoration: none;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-5px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            color: #39ff14;
+            font-size: 42px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+        }
+
+        .problem-summary {
+            background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .summary-section h3 {
+            color: #39ff14;
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .summary-section p,
+        .summary-section ul {
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        .summary-section ul {
+            list-style: none;
+            padding-left: 10px;
+        }
+
+        .summary-section li {
+            margin: 5px 0;
+        }
+
+        .output-preview {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            color: #39ff14;
+            font-size: 14px;
+            white-space: pre-wrap;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section h2 {
+            color: #39ff14;
+            font-size: 28px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h2::before {
+            content: '';
+            width: 40px;
+            height: 3px;
+            background: #39ff14;
+        }
+
+        .solution-container {
+            background: #0f0f0f;
+            border: 2px solid #39ff14;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            position: relative;
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.1);
+        }
+
+        .solution-header {
+            color: #39ff14;
+            font-size: 16px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copy-btn {
+            background: #39ff14;
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: #4fff1f;
+            transform: scale(1.05);
+        }
+
+        .copy-btn.copied {
+            background: #10b981;
+        }
+
+        .code-container {
+            background: #000;
+            border-radius: 10px;
+            padding: 15px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            position: relative;
+            white-space: pre;
+            line-height: 1.4;
+        }
+
+        .code-container pre {
+            font-family: inherit;
+            font-size: inherit;
+            line-height: 1.4;
+            color: inherit;
+        }
+
+        .code-line {
+            padding: 5px 15px;
+            margin: 2px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            display: block;
+            color: #fff;
+        }
+
+        .code-line:hover {
+            background: rgba(57, 255, 20, 0.1);
+            transform: translateX(10px);
+            box-shadow: -5px 0 0 0 #39ff14;
+        }
+
+        .code-line.highlight {
+            background: rgba(57, 255, 20, 0.1);
+            transform: translateX(10px);
+            box-shadow: -5px 0 0 0 #39ff14;
+        }
+
+        .tooltip {
+            position: fixed;
+            background: #1a1a1a;
+            border: 2px solid #39ff14;
+            border-radius: 8px;
+            padding: 10px 15px;
+            max-width: 350px;
+            font-size: 13px;
+            color: #39ff14;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.2s, transform 0.2s;
+            z-index: 1000;
+        }
+
+        .tooltip.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tooltip::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid #39ff14;
+        }
+
+        .hover-hint {
+            color: #666;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.6;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.6;
+            }
+        }
+
+        code {
+            background: #1a1a1a;
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: #39ff14;
+            font-family: 'Courier New', monospace;
+        }
+
+        .highlight-code {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            color: #fff;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .highlight-remove {
+            color: #ef4444;
+            text-decoration: line-through;
+        }
+
+        .highlight-keep {
+            color: #39ff14;
+        }
+
+        .step-by-step {
+            background: #1a1a1a;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .step-by-step table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .step-by-step th,
+        .step-by-step td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        .step-by-step th {
+            color: #39ff14;
+            font-weight: bold;
+        }
+
+        .step-by-step .check-yes {
+            color: #10b981;
+        }
+
+        .step-by-step .check-no {
+            color: #ef4444;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <a href="../../topic.html?topic=python" class="back-btn">
+            <span>←</span> Back to Python Problems
+        </a>
+        <span style="color: #666;">Problem 7</span>
+    </div>
+
+    <div class="container">
+        <h1>Runner-Up Score</h1>
+
+        <div class="problem-summary">
+            <div class="summary-grid">
+                <div class="summary-section">
+                    <h3>Task</h3>
+                    <p>Find the <strong>second highest score</strong> from a list of sports day scores:</p>
+                    <ul>
+                        <li>• Remove all instances of the highest score</li>
+                        <li>• Find the maximum of remaining scores</li>
+                        <li>• This gives you the runner-up score</li>
+                    </ul>
+
+                    <h3 style="margin-top: 20px;">Input</h3>
+                    <p>Two lines:</p>
+                    <ul>
+                        <li>• n (number of scores)</li>
+                        <li>• n space-separated integers (the scores)</li>
+                    </ul>
+                </div>
+                <div class="summary-section">
+                    <h3>Example</h3>
+                    <p>Input: 5<br>2 3 6 6 5</p>
+
+                    <h3 style="margin-top: 20px;">Expected Output</h3>
+                    <div class="output-preview">5</div>
+
+                    <p style="margin-top: 10px; font-size: 12px; color: #999;">
+                        Highest: 6 (appears twice)<br>
+                        After removing all 6s: [2, 3, 5]<br>
+                        Runner-up: 5
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Solution</h2>
+            <div class="solution-container">
+                <div class="solution-header">
+                    <span>✨ Complete Solution</span>
+                    <button class="copy-btn" onclick="copyCode('main-code')">Copy</button>
+                </div>
+                <div class="code-container" id="main-code">
+                    <pre style="margin:0;padding:0;"><span class="code-line" data-group="main">if __name__ == '__main__':</span>
+<span class="code-line" data-group="input">    n = int(input())</span>
+<span class="code-line" data-group="input">    arr = list(map(int, input().split()))</span>
+<span class="code-line" data-group="process">    max_score = max(arr)</span>
+<span class="code-line" data-group="filter">    filtered = [x for x in arr if x != max_score]</span>
+<span class="code-line" data-group="output">    print(max(filtered))</span></pre>
+                </div>
+                <div class="hover-hint">Hover over code sections to see explanations</div>
+            </div>
+
+            <div class="solution-container">
+                <div class="solution-header">
+                    <span>📖 What Is the Question Asking?</span>
+                </div>
+                <div style="padding: 0 10px;">
+                    <p style="margin-bottom: 15px;">You're given a list of scores from a sports day. Your goal is to
+                        <strong>find the second highest score</strong> — also called the <strong>runner-up</strong>
+                        score.
+                    </p>
+
+                    <p style="color: #39ff14; margin-bottom: 10px;">🧠 Example:</p>
+                    <div class="highlight-code">Input: 5
+                        2 3 6 6 5</div>
+
+                    <p style="margin: 15px 0;">Means:</p>
+                    <ul style="color: #ccc; margin-bottom: 15px;">
+                        <li>• <code>n = 5</code> → There are 5 scores</li>
+                        <li>• <code>arr = [2, 3, 6, 6, 5]</code></li>
+                    </ul>
+
+                    <p style="margin-bottom: 15px;">✔️ Highest score: <code>6</code><br>
+                        But there are two of them.<br>
+                        So the next best score <strong>after removing all 6s</strong> is <code>5</code>.</p>
+
+                    <p style="color: #39ff14;">💡 Goal: Print <code>5</code> — the second highest number in the list.
+                    </p>
+                </div>
+            </div>
+
+            <div class="solution-container">
+                <div class="solution-header">
+                    <span>❗ Why This Doesn't Work (Common Mistake)</span>
+                </div>
+                <div style="padding: 0 10px;">
+                    <div class="highlight-code">n = int(input())
+                        arr = map(int, input().split()) # ❌ Problem here!
+                        max_score = max(arr)
+                        filtered = [x for x in arr if x != max_score]
+                        print(max(filtered))</div>
+
+                    <p style="margin: 20px 0; color: #ef4444;"><strong>The issue:</strong> <code>map()</code> returns a
+                        <strong>map object</strong>, not a list. It's a one-time-use iterable — once it's looped through
+                        (e.g. when you call <code>max(arr)</code>), it's <strong>exhausted</strong> and becomes empty.
+                    </p>
+
+                    <p style="margin-bottom: 15px;">So when you run:</p>
+                    <div class="highlight-code">max_score = max(arr) # Uses up the map object
+                        filtered = [x for x in arr if x != max_score] # arr is now empty!</div>
+
+                    <p style="color: #39ff14; margin-top: 20px;"><strong>✅ Fix:</strong> Convert <code>map()</code> to a
+                        list:</p>
+                    <div class="highlight-code">arr = list(map(int, input().split()))</div>
+                </div>
+            </div>
+
+            <div class="solution-container">
+                <div class="solution-header">
+                    <span>🔍 List Comprehension Breakdown</span>
+                </div>
+                <div style="padding: 0 10px;">
+                    <p style="margin-bottom: 15px;">Let's fully break down this list comprehension:</p>
+                    <div class="highlight-code">[x for x in arr if x != max_score]</div>
+
+                    <p style="margin: 20px 0;">This is used to <strong>filter out</strong> the highest score (so we can
+                        find the runner-up).</p>
+
+                    <p style="color: #39ff14; margin-bottom: 10px;">🧩 Step-by-step breakdown:</p>
+                    <p style="margin-bottom: 10px;">Let's say: <code>arr = [2, 3, 6, 6, 5]</code> and
+                        <code>max_score = 6</code>
+                    </p>
+
+                    <div class="step-by-step">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Step</th>
+                                    <th>x</th>
+                                    <th>x != max_score</th>
+                                    <th>Keep it?</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td>2 != 6 → True</td>
+                                    <td class="check-yes">✅ Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>3</td>
+                                    <td>3 != 6 → True</td>
+                                    <td class="check-yes">✅ Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>6</td>
+                                    <td>6 != 6 → False</td>
+                                    <td class="check-no">❌ No</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>6</td>
+                                    <td>6 != 6 → False</td>
+                                    <td class="check-no">❌ No</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>5</td>
+                                    <td>5 != 6 → True</td>
+                                    <td class="check-yes">✅ Yes</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p style="color: #39ff14; margin: 20px 0;">✅ Result: <code>[2, 3, 5]</code></p>
+                    <p style="margin-bottom: 15px;">Now you can find the second highest score:</p>
+                    <div class="highlight-code">print(max([2, 3, 5])) # → 5</div>
+                </div>
+            </div>
+
+            <div class="solution-container">
+                <div class="solution-header">
+                    <span>🔢 Complete Example Walkthrough</span>
+                </div>
+                <div style="padding: 0 10px;">
+                    <p style="margin-bottom: 15px;">Given input: <code>5</code> and <code>2 3 6 6 5</code></p>
+
+                    <p style="color: #39ff14; margin-bottom: 10px;">Step 1: Read input</p>
+                    <div class="highlight-code">n = 5
+                        arr = [2, 3, 6, 6, 5]</div>
+
+                    <p style="color: #39ff14; margin: 20px 0 10px;">Step 2: Find maximum</p>
+                    <div class="highlight-code">max_score = max([2, 3, 6, 6, 5]) = 6</div>
+
+                    <p style="color: #39ff14; margin: 20px 0 10px;">Step 3: Filter out all maximum values</p>
+                    <div class="highlight-code">filtered = [x for x in [2, 3, 6, 6, 5] if x != 6]
+                        = [2, 3, 5]</div>
+
+                    <p style="color: #39ff14; margin: 20px 0 10px;">Step 4: Find runner-up</p>
+                    <div class="highlight-code">max(filtered) = max([2, 3, 5]) = 5</div>
+
+                    <p style="color: #39ff14; margin: 20px 0 10px;">✅ Final Answer: <strong>5</strong></p>
+                </div>
+            </div>
+
+            <div class="solution-container">
+                <div class="solution-header">
+                    <span>💡 Summary</span>
+                </div>
+                <div style="padding: 0 10px;">
+                    <ul style="color: #ccc; line-height: 1.8;">
+                        <li>• <strong>Convert map to list</strong> — <code>list(map(int, input().split()))</code> to
+                            avoid exhausted iterator</li>
+                        <li>• <strong>Find maximum</strong> — <code>max(arr)</code> gets the highest score</li>
+                        <li>• <strong>Filter with list comprehension</strong> — removes all instances of the maximum
+                        </li>
+                        <li>• <strong>Find runner-up</strong> — <code>max(filtered)</code> gives the second highest</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tooltip element -->
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        const explanations = {
+            'main': 'Standard Python entry point - ensures code runs when script is executed directly.',
+            'input': 'Read the number of scores (n) and convert the space-separated scores into a list of integers. Using list() prevents the map object exhaustion issue.',
+            'process': 'Find the highest score in the array using the max() function.',
+            'filter': 'List comprehension that creates a new list containing only scores that are NOT equal to the maximum score. This removes all instances of the highest score.',
+            'output': 'Find the maximum value from the filtered list - this is the runner-up (second highest) score.'
+        };
+
+        const tooltip = document.getElementById('tooltip');
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const codeLines = document.querySelectorAll('.code-line');
+
+            codeLines.forEach(line => {
+                line.addEventListener('mouseenter', function (e) {
+                    const groupType = this.getAttribute('data-group');
+
+                    if (groupType) {
+                        // Highlight all lines with same group
+                        const container = this.closest('.code-container');
+                        const groupLines = container.querySelectorAll(`[data-group="${groupType}"]`);
+                        groupLines.forEach(gl => gl.classList.add('highlight'));
+
+                        if (explanations[groupType]) {
+                            tooltip.innerHTML = explanations[groupType];
+                            tooltip.classList.add('visible');
+                            updateTooltipPosition(e);
+                        }
+                    }
+                });
+
+                line.addEventListener('mousemove', function (e) {
+                    updateTooltipPosition(e);
+                });
+
+                line.addEventListener('mouseleave', function () {
+                    const groupType = this.getAttribute('data-group');
+                    if (groupType) {
+                        const container = this.closest('.code-container');
+                        const groupLines = container.querySelectorAll(`[data-group="${groupType}"]`);
+                        groupLines.forEach(gl => gl.classList.remove('highlight'));
+                    }
+                    tooltip.classList.remove('visible');
+                });
+            });
+        });
+
+        function updateTooltipPosition(e) {
+            const x = e.clientX;
+            const y = e.clientY;
+
+            // Position tooltip below and to the right of cursor
+            tooltip.style.left = x + 10 + 'px';
+            tooltip.style.top = y + 20 + 'px';
+
+            // Adjust if tooltip goes off screen
+            const rect = tooltip.getBoundingClientRect();
+            if (rect.right > window.innerWidth) {
+                tooltip.style.left = (window.innerWidth - rect.width - 10) + 'px';
+            }
+            if (rect.bottom > window.innerHeight) {
+                tooltip.style.top = (y - rect.height - 20) + 'px';
+            }
+        }
+
+        function copyCode(elementId) {
+            const element = document.getElementById(elementId);
+            const preElement = element.querySelector('pre');
+            const textToCopy = preElement.textContent;
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✓ Copied!';
+                btn.classList.add('copied');
+
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+
+</html>

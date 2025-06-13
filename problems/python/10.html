@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finding the Percentage - Solution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Courier New', monospace;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(to bottom, #1a1a1a, #0f0f0f);
+            padding: 20px 30px;
+            border-bottom: 2px solid #39ff14;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 2px 10px rgba(57, 255, 20, 0.1);
+        }
+
+        .back-btn {
+            color: #39ff14;
+            text-decoration: none;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-5px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            color: #39ff14;
+            font-size: 42px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+        }
+
+        .problem-summary {
+            background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .summary-section h3 {
+            color: #39ff14;
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .summary-section p,
+        .summary-section ul {
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        .summary-section ul {
+            list-style: none;
+            padding-left: 10px;
+        }
+
+        .summary-section li {
+            margin: 5px 0;
+        }
+
+        .output-preview {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            color: #39ff14;
+            font-size: 14px;
+            white-space: pre-wrap;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section h2 {
+            color: #39ff14;
+            font-size: 28px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h2::before {
+            content: '';
+            width: 40px;
+            height: 3px;
+            background: #39ff14;
+        }
+
+        .solution-container {
+            background: #0f0f0f;
+            border: 2px solid #39ff14;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            position: relative;
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.1);
+        }
+
+        .solution-header {
+            color: #39ff14;
+            font-size: 16px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copy-btn {
+            background: #39ff14;
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: #4fff1f;
+            transform: scale(1.05);
+        }
+
+        .copy-btn.copied {
+            background: #10b981;
+        }
+
+        .code-container {
+            background: #000;
+            border-radius: 10px;
+            padding: 15px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            position: relative;
+            white-space: pre;
+            line-height: 0.8;
+        }
+
+        .code-container pre {
+            font-family: inherit;
+            font-size: inherit;
+            line-height: 0.8;
+            color: inherit;
+        }
+
+        .code-line {
+            padding: 0 15px;
+            margin: 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            display: block;
+            color: #fff;
+            line-height: 0.8;
+        }
+
+        .code-line:hover {
+            background: rgba(57, 255, 20, 0.1);
+            transform: translateX(10px);
+            box-shadow: -5px 0 0 0 #39ff14;
+        }
+
+        .code-line.highlight {
+            background: rgba(57, 255, 20, 0.1);
+            transform: translateX(10px);
+            box-shadow: -5px 0 0 0 #39ff14;
+        }
+
+        .tooltip {
+            position: fixed;
+            background: #1a1a1a;
+            border: 2px solid #39ff14;
+            border-radius: 8px;
+            padding: 10px 15px;
+            max-width: 350px;
+            font-size: 13px;
+            color: #39ff14;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.2s, transform 0.2s;
+            z-index: 1000;
+        }
+
+        .tooltip.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tooltip::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid #39ff14;
+        }
+
+        .hover-hint {
+            color: #666;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.6;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.6;
+            }
+        }
+
+        code {
+            background: #1a1a1a;
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: #39ff14;
+            font-family: 'Courier New', monospace;
+        }
+
+        .highlight-code {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            color: #fff;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .data-structure {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+
+        .step-table {
+            background: #1a1a1a;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .step-table table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .step-table th,
+        .step-table td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        .step-table th {
+            color: #39ff14;
+            font-weight: bold;
+        }
+
+        .code-part {
+            color: #87ceeb;
+        }
+
+        .variable-name {
+            color: #ffd700;
+        }
+
+        .string-val {
+            color: #98fb98;
+        }
+
+        .unpacking-demo {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <a href="../../topic.html?topic=python" class="back-btn">
+            <span>←</span> Back to Python Problems
+        </a>
+        <span style="color: #666;">Problem 9</span>
+    </div>
+
+    <div class="container">
+        <h1>Finding the Percentage</h1>
+
+        <div class="problem-summary">
+            <div class="summary-grid">
+                <div class="summary-section">
+                    <h3>Task</h3>
+                    <p>Build a student grade lookup system:</p>
+                    <ul>
+                        <li>• Store each student's name and 3 scores</li>
+                        <li>• Calculate average for a queried student</li>
+                        <li>• Print result rounded to 2 decimal places</li>
+                    </ul>
+
+                    <h3 style="margin-top: 20px;">Input</h3>
+                    <p>Number of students, then for each:<br>
+                        Name followed by 3 scores<br>
+                        Finally: name to query</p>
+                </div>
+                <div class="summary-section">
+                    <h3>Example</h3>
+                    <div class="data-structure">3
+                        Krishna 67 68 69
+                        Arjun 70 98 63
+                        Malika 52 56 60
+                        Malika</div>
+
+                    <h3 style="margin-top: 20px;">Expected Output</h3>
+                    <div class="output-preview">56.00</div>
+
+                    <p style="margin-top: 10px; font-size: 12px; color: #999;">
+                        Malika's scores: [52, 56, 60]<br>
+                        Average: (52+56+60)/3 = 56.00
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Solution</h2>
+            <div class="solution-container">
+                <div class="solution-header">
+                    <span>✨ Complete Solution</span>
+                    <button class="copy-btn" onclick="copyCode('main-code')">Copy</button>
+                </div>
+                <div class="code-container" id="main-code">
+                    <pre style="margin:0;padding:0;"><span class="code-line" data-group="main">if __name__ == '__main__':</span>
+<span class="code-line" data-group="setup">    n = int(input())</span>
+<span class="code-line" data-group="setup">    student_marks = {}</span>
+<span class="code-line" data-group="input">    for _ in range(n):</span>
+<span class="code-line" data-group="input">        name, *line = input().split()</span>
+<span class="code-line" data-group="input">        scores = list(map(float, line))</span>
+<span class="code-line" data-group="input">        student_marks[name] = scores</span>
+<span class="code-line" data-group="query">    query_name = input()</span>
+<span class="code-line" data-group="calculate">    marks = student_marks[query_name]</span>
+<span class="code-line" data-group="calculate">    average = sum(marks) / len(marks)</span>
+<span class="code-line" data-group="output">    print(f"{average:.2f}")</span></pre>
+                </div>
+                <div class="hover-hint">Hover over code sections to see explanations</div>
+            </div>
+
+            <div class="solution-container">
+                <div class="solution-header">
+                    <span>📖 What You're Building</span>
+                </div>
+                <div style="padding: 0 10px;">
+                    <p style="margin-bottom: 15px;">You're creating a <strong>student report tool</strong> that:</p>
+                    <ul style="color: #ccc; margin-bottom: 15px;">
+                        <li>• Reads student names and their 3 test scores</li>
+                        <li>• Stores them for easy lookup by name</li>
+                        <li>• Calculates and displays a specific student's average</li>
+                    </ul>
+
+                    <p style="color: #39ff14; margin-bottom: 10px;">🎯 Real-world analogy:</p>
+                    <p style="margin-bottom: 15px;">Like a grade book where you can quickly find any student's average
+                        score.</p>
+
+                    <div class="data-structure">Dictionary structure:
+                        {
+                        "Krishna": [67.0, 68.0, 69.0],
+                        "Arjun": [70.0, 98.0, 63.0],
+                        "Malika": [52.0, 56.0, 60.0]
+                        }</div>
+                </div>
+            </div>
+
+            <div class="solution-container">
+                <div class="solution-header">
+                    <span>🔧 Code Stub Breakdown</span>
+                </div>
+                <div style="padding: 0 10px;">
+                    <p style="margin-bottom: 15px;">Let's understand each line and why it's useful:</p>
+
+                    <div class="step-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>What It Does</th>
+                                    <th>Why You Need It</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code class="code-part">n = int(input())</code></td>
+                                    <td>Read number of students</td>
+                                    <td>Know how many times to loop</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-part">student_marks = {}</code></td>
+                                    <td>Create empty dictionary</td>
+                                    <td>Store student data for lookup</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-part">for _ in range(n):</code></td>
+                                    <td>Loop n times</td>
+                                    <td>Read each student's data</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-part">name, *line = input().split()</code></td>
+                                    <td>Split name from scores</td>
+                                    <td>Separate the two data types</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-part">scores = list(map(float, line))</code></td>
+                                    <td>Convert scores to numbers</td>
+                                    <td>Enable math operations</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-part">student_marks[name] = scores</code></td>
+                                    <td>Store in dictionary</td>
+                                    <td>Save for later lookup</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="code-part">query_name = input()</code></td>
+                                    <td>Get name to look up</td>
+                                    <td>Know which student to find</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="solution-container">
+                <div class="solution-header">
+                    <span>🎯 Understanding Unpacking</span>
+                </div>
+                <div style="padding: 0 10px;">
+                    <p style="margin-bottom: 15px;">The key line: <code>name, *line = input().split()</code></p>
+
+                    <div class="unpacking-demo">
+                        <p style="color: #39ff14; margin-bottom: 10px;">Input: <span class="string-val">"Krishna 67 68
+                                69"</span></p>
+
+                        <p style="margin: 10px 0;">Step 1: <code>input().split()</code> creates:</p>
+                        <div class="highlight-code">["Krishna", "67", "68", "69"]</div>
+
+                        <p style="margin: 10px 0;">Step 2: Unpacking assigns:</p>
+                        <div class="highlight-code">name = "Krishna" # First element
+                            *line = ["67", "68", "69"] # Rest of elements</div>
+
+                        <p style="margin: 10px 0; color: #39ff14;">Why use <code>*line</code>?</p>
+                        <p style="margin-bottom: 15px;">The <code>*</code> collects all remaining elements into a list,
+                            making the code flexible for any number of scores.</p>
+                    </div>
+
+                    <p style="color: #39ff14; margin-bottom: 10px;">What about <code>for _ in range(n)</code>?</p>
+                    <p style="margin-bottom: 15px;">The <code>_</code> is a throwaway variable - you don't need the loop
+                        counter, just want to repeat n times.</p>
+                </div>
+            </div>
+
+            <div class="solution-container">
+                <div class="solution-header">
+                    <span>🔢 Step-by-Step Execution</span>
+                </div>
+                <div style="padding: 0 10px;">
+                    <p style="color: #39ff14; margin-bottom: 10px;">Input processing:</p>
+                    <div class="highlight-code">3 # n = 3
+                        Krishna 67 68 69 # name="Krishna", scores=[67.0, 68.0, 69.0]
+                        Arjun 70 98 63 # name="Arjun", scores=[70.0, 98.0, 63.0]
+                        Malika 52 56 60 # name="Malika", scores=[52.0, 56.0, 60.0]
+                        Malika # query_name = "Malika"</div>
+
+                    <p style="color: #39ff14; margin: 20px 0 10px;">Dictionary after input:</p>
+                    <div class="highlight-code">{
+                        "Krishna": [67.0, 68.0, 69.0],
+                        "Arjun": [70.0, 98.0, 63.0],
+                        "Malika": [52.0, 56.0, 60.0]
+                        }</div>
+
+                    <p style="color: #39ff14; margin: 20px 0 10px;">Calculation:</p>
+                    <div class="highlight-code">marks = student_marks["Malika"] # [52.0, 56.0, 60.0]
+                        average = sum(marks) / len(marks) # 168.0 / 3 = 56.0
+                        print(f"{average:.2f}") # "56.00"</div>
+                </div>
+            </div>
+
+            <div class="solution-container">
+                <div class="solution-header">
+                    <span>🛠️ Tool Selection Logic</span>
+                </div>
+                <div style="padding: 0 10px;">
+                    <p style="margin-bottom: 15px;">Why each tool was chosen:</p>
+
+                    <div class="step-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Need</th>
+                                    <th>Tool</th>
+                                    <th>Why It's Perfect</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Store by name</td>
+                                    <td>Dictionary</td>
+                                    <td>Fast O(1) lookup by key</td>
+                                </tr>
+                                <tr>
+                                    <td>Multiple scores</td>
+                                    <td>List</td>
+                                    <td>Supports sum() and len()</td>
+                                </tr>
+                                <tr>
+                                    <td>String → numbers</td>
+                                    <td>map(float, ...)</td>
+                                    <td>Converts all at once</td>
+                                </tr>
+                                <tr>
+                                    <td>2 decimal places</td>
+                                    <td>f"{value:.2f}"</td>
+                                    <td>Built-in formatting</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="solution-container">
+                <div class="solution-header">
+                    <span>💡 Problem-Solving Approach</span>
+                </div>
+                <div style="padding: 0 10px;">
+                    <p style="margin-bottom: 15px;">How to think through similar problems:</p>
+                    <ul style="color: #ccc; line-height: 1.8;">
+                        <li>• <strong>Data storage:</strong> What structure makes lookup easy?</li>
+                        <li>• <strong>Input parsing:</strong> How to separate different data types?</li>
+                        <li>• <strong>Processing:</strong> What operations do I need (sum, average, etc.)?</li>
+                        <li>• <strong>Output format:</strong> How should the result look?</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tooltip element -->
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        const explanations = {
+            'main': 'Standard Python entry point - ensures code runs when script is executed directly.',
+            'setup': 'Read number of students and create empty dictionary to store student data.',
+            'input': 'Loop through each student, parse their line to extract name and scores, convert scores to floats, and store in dictionary.',
+            'query': 'Read the name of the student whose average we need to calculate.',
+            'calculate': 'Look up the student\'s scores in the dictionary and calculate their average.',
+            'output': 'Format the average to 2 decimal places and print the result.'
+        };
+
+        const tooltip = document.getElementById('tooltip');
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const codeLines = document.querySelectorAll('.code-line');
+
+            codeLines.forEach(line => {
+                line.addEventListener('mouseenter', function (e) {
+                    const groupType = this.getAttribute('data-group');
+
+                    if (groupType) {
+                        // Highlight all lines with same group
+                        const container = this.closest('.code-container');
+                        const groupLines = container.querySelectorAll(`[data-group="${groupType}"]`);
+                        groupLines.forEach(gl => gl.classList.add('highlight'));
+
+                        if (explanations[groupType]) {
+                            tooltip.innerHTML = explanations[groupType];
+                            tooltip.classList.add('visible');
+                            updateTooltipPosition(e);
+                        }
+                    }
+                });
+
+                line.addEventListener('mousemove', function (e) {
+                    updateTooltipPosition(e);
+                });
+
+                line.addEventListener('mouseleave', function () {
+                    const groupType = this.getAttribute('data-group');
+                    if (groupType) {
+                        const container = this.closest('.code-container');
+                        const groupLines = container.querySelectorAll(`[data-group="${groupType}"]`);
+                        groupLines.forEach(gl => gl.classList.remove('highlight'));
+                    }
+                    tooltip.classList.remove('visible');
+                });
+            });
+        });
+
+        function updateTooltipPosition(e) {
+            const x = e.clientX;
+            const y = e.clientY;
+
+            // Position tooltip below and to the right of cursor
+            tooltip.style.left = x + 10 + 'px';
+            tooltip.style.top = y + 20 + 'px';
+
+            // Adjust if tooltip goes off screen
+            const rect = tooltip.getBoundingClientRect();
+            if (rect.right > window.innerWidth) {
+                tooltip.style.left = (window.innerWidth - rect.width - 10) + 'px';
+            }
+            if (rect.bottom > window.innerHeight) {
+                tooltip.style.top = (y - rect.height - 20) + 'px';
+            }
+        }
+
+        function copyCode(elementId) {
+            const element = document.getElementById(elementId);
+            const preElement = element.querySelector('pre');
+            const textToCopy = preElement.textContent;
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✓ Copied!';
+                btn.classList.add('copied');
+
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+
+</html>
